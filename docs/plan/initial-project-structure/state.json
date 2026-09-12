@@ -1,0 +1,136 @@
+{
+  "schema_version": 3,
+  "slug": "initial-project-structure",
+  "phase": "AWAITING_WALKTHROUGH_APPROVAL",
+  "git": {
+    "base_branch": "feat/initial-project-structure",
+    "integration_branch": "feat/initial-project-structure"
+  },
+  "approvals": {
+    "plan": true,
+    "walkthrough": false
+  },
+  "execution": {
+    "tasks": [
+      {
+        "task_id": "T01",
+        "status": "DONE",
+        "result_notes": "ArchUnit/JUnit infrastructure and module-owned main output import configured."
+      },
+      {
+        "task_id": "T02",
+        "status": "DONE",
+        "result_notes": "Core service contract architecture test added."
+      },
+      {
+        "task_id": "T03",
+        "status": "DONE",
+        "result_notes": "Service dependency prohibitions and naming rules added."
+      },
+      {
+        "task_id": "T04",
+        "status": "DONE",
+        "result_notes": "Client, consumer, and producer naming tests added."
+      },
+      {
+        "task_id": "T05",
+        "status": "DONE",
+        "result_notes": "README updated with enforced and documentation-only architecture rules."
+      },
+      {
+        "task_id": "T02",
+        "status": "TODO"
+      },
+      {
+        "task_id": "T03",
+        "status": "TODO"
+      },
+      {
+        "task_id": "T04",
+        "status": "TODO"
+      },
+      {
+        "task_id": "T05",
+        "status": "TODO"
+      }
+    ],
+    "role_invocations": [
+      {
+        "role": "Researcher",
+        "agent_name": "java_researcher",
+        "assignment_id": "R01",
+        "phase_skill": "$java-research",
+        "configured_model": "gpt-5.6-luna",
+        "configured_reasoning_effort": "medium",
+        "started_at": "2026-09-12T07:54:41Z",
+        "completed_at": "2026-09-12T07:57:57Z",
+        "outcome": "COMPLETE"
+      },
+      {
+        "role": "Planner",
+        "agent_name": "java_planner",
+        "phase_skill": "$java-plan",
+        "configured_model": "gpt-5.6-sol",
+        "configured_reasoning_effort": "xhigh",
+        "started_at": "2026-09-12T07:58:50Z",
+        "completed_at": "2026-09-12T08:06:27Z",
+        "outcome": "COMPLETE"
+      },
+      {
+        "role": "Implementer",
+        "agent_name": "java_implementer",
+        "phase_skill": "$java-implement",
+        "configured_model": "gpt-5.6-luna",
+        "configured_reasoning_effort": "max",
+        "started_at": "2026-09-12T08:08:11Z",
+        "completed_at": "2026-09-12T08:18:52Z",
+        "outcome": "COMPLETE"
+      },
+      {
+        "role": "Tester",
+        "agent_name": "java_tester",
+        "phase_skill": "$java-test",
+        "configured_model": "gpt-5.6-luna",
+        "configured_reasoning_effort": "medium",
+        "started_at": "2026-09-12T08:19:08Z",
+        "completed_at": "2026-09-12T08:20:11Z",
+        "outcome": "COMPLETE"
+      },
+      {
+        "role": "Reviewer",
+        "agent_name": "java_reviewer",
+        "phase_skill": "$java-review",
+        "configured_model": "gpt-5.6-sol",
+        "configured_reasoning_effort": "xhigh",
+        "started_at": "2026-09-12T08:45:19Z",
+        "completed_at": "2026-09-12T08:49:26Z",
+        "outcome": "COMPLETE"
+      },
+      {
+        "role": "Walkthrough",
+        "agent_name": "java_walkthrough",
+        "phase_skill": "$java-walkthrough",
+        "configured_model": "gpt-5.6-luna",
+        "configured_reasoning_effort": "low",
+        "started_at": "2026-09-12T08:50:53Z",
+        "completed_at": "2026-09-12T08:52:43Z",
+        "outcome": "COMPLETE"
+      }
+    ],
+    "blocker_fix_attempts": {},
+    "pending_decision": {
+      "stage": "FINAL_COMMIT",
+      "question": "워크스루가 완료됐습니다. 모든 현재 변경을 하나의 커밋으로 생성할까요?",
+      "options": [
+        "Approve and commit",
+        "Revise walkthrough",
+        "Return to implementation"
+      ],
+      "evidence": [
+        "docs/walkthrough/initial-project-structure.md completed",
+        "docs/plan/initial-project-structure/review.md verdict PASS",
+        "./gradlew clean build exited 0"
+      ]
+    }
+  }
+}
