@@ -4,6 +4,5 @@ include(
     "core",
     "service",
     "client",
-    "consumer",
     "producer",
 )

@@ -15,7 +15,6 @@ Application and business code intentionally start empty. The template contains n
 | `core` | Public service contracts, contract models, and contract exceptions. |
 | `service` | Server-side implementations, inbound endpoints, persistence, mapping, configuration, and filters. |
 | `client` | Remote implementations of contracts declared by `core`. |
-| `consumer` | Optional inbound asynchronous message handling. |
 | `producer` | Optional outbound asynchronous message publishing. |
 
 The initial dependency graph is deliberately small:
@@ -23,7 +22,6 @@ The initial dependency graph is deliberately small:
 ```text
 service  -> core
 client   -> core
-consumer -> core
 producer -> core
 ```
 
@@ -54,10 +52,6 @@ client
 ├── service/client
 └── config
 
-consumer
-├── consumer
-└── config
-
 producer
 ├── producer
 └── config
@@ -72,7 +66,6 @@ Empty package directories are preserved with `.gitkeep` files until application 
 | Service contract | `FooService` |
 | Server-side implementation | `FooServiceImpl` |
 | Client-side implementation | `FooServiceClient` |
-| Message consumer | `FooConsumer` |
 | Message producer | `FooProducer` |
 | Persistence entity | `FooEntity` |
 
@@ -100,13 +93,12 @@ The tests enforce these conventions:
 - A top-level type directly in a `service.client` package must be a class named with the `ServiceClient` suffix and must implement the name-derived public `core` service contract.
 - Server and client contract matching allows indirect implementation through an intermediate superclass.
 - A top-level type directly in a `repository.entity` package must end with `Entity`.
-- A top-level type directly in a `consumer` package must end with `Consumer`.
 - A top-level type directly in a `producer` package must end with `Producer`.
 - Classes in `endpoint` packages must not depend on `service.impl`, `repository`, or `mapper` packages.
 - Classes in `repository` packages must not depend on `endpoint` or `service.impl` packages.
 - Classes in `mapper` packages must not depend on `endpoint` packages.
 
-The dependency rules are intentionally prohibitions. Endpoint-to-service-contract and service-implementation-to-repository/mapper dependencies remain allowed. Gradle enforces the module-level direction: `service`, `client`, `consumer`, and `producer` depend on `core`, while `core` has no implementation-module dependency.
+The dependency rules are intentionally prohibitions. Endpoint-to-service-contract and service-implementation-to-repository/mapper dependencies remain allowed. Gradle enforces the module-level direction: `service`, `client`, and `producer` depend on `core`, while `core` has no implementation-module dependency.
 
 Core contracts are expected to remain logging-free at the API/design level. This template deliberately does not require logger fields or forbid a logger type because no logging API is selected; a generated service should add an API-specific rule after choosing its logging stack.
 
