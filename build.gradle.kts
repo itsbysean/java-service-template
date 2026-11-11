@@ -39,8 +39,14 @@ subprojects {
             .output
             .classesDirs
 
+        module.extensions.getByType<SourceSetContainer>().named("test") {
+            java.srcDir(rootProject.file("architecture-tests/src/test/java"))
+        }
+
         module.tasks.withType<Test>().configureEach {
             useJUnitPlatform()
+            systemProperty("architectureTest.module", module.name)
+            systemProperty("architectureTest.sources", module.file("src/main/java").absolutePath)
             systemProperty("architectureTest.mainClassesDirs", mainClassesDirs.asPath)
             if (module.path == ":service" || module.path == ":client") {
                 val contractClassesDirs = project(":core")
