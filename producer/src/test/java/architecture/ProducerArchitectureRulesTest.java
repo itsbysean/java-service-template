@@ -28,7 +28,7 @@ final class ProducerArchitectureRulesTest {
     void unrelatedPackageIsNotSelected() {
         assertPasses(
                 ProducerArchitectureRules.producersMustUseProducerSuffix(),
-                fixtures("architecture.fixture.producer.outside"));
+                fixtures("architecture.fixture.unrelated"));
     }
 
     private static JavaClasses fixtures(final String... packageNames) {

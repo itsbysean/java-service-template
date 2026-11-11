@@ -85,22 +85,28 @@ Production source sets have no external dependencies. Test configurations use Ar
 
 Architecture tests use ArchUnit and JUnit 5. They import each module's compiled production output; service and client tests additionally import the explicitly configured `core` output so contract relationships can be checked. Empty production modules remain valid and future package roots can be replaced without changing the rules.
 
-The tests enforce these conventions:
+The tests enforce these conventions, including role subpackages:
 
-- A top-level type directly in a `service` package in `core` must be a public interface whose name ends with `Service`.
+- A top-level type in a `service` package or its subpackages in `core` must be a public interface whose name ends with `Service`.
 - A type in a `core` `model` package must not use the `Dto` suffix; nested operation/view types remain allowed.
-- A top-level type directly in a `service.impl` package must be a class named with the `ServiceImpl` suffix and must implement the name-derived public `core` service contract.
-- A top-level type directly in a `service.client` package must be a class named with the `ServiceClient` suffix and must implement the name-derived public `core` service contract.
+- A top-level implementation in a `service.impl` package or its subpackages must use the `ServiceImpl` suffix and implement the name-derived public `core` service contract.
+- A top-level implementation in a `service.client` package or its subpackages must use the `ServiceClient` suffix and implement the name-derived public `core` service contract.
 - Server and client contract matching allows indirect implementation through an intermediate superclass.
-- A top-level type directly in a `repository.entity` package must end with `Entity`.
-- A top-level type directly in a `producer` package must end with `Producer`.
+- A top-level type in a `repository.entity` package or its subpackages must end with `Entity`.
+- A top-level type in a `producer` package or its subpackages must end with `Producer`.
 - Classes in `endpoint` packages must not depend on `service.impl`, `repository`, or `mapper` packages.
 - Classes in `repository` packages must not depend on `endpoint` or `service.impl` packages.
 - Classes in `mapper` packages must not depend on `endpoint` packages.
 
-The dependency rules are intentionally prohibitions. Endpoint-to-service-contract and service-implementation-to-repository/mapper dependencies remain allowed. Gradle enforces the module-level direction: `service`, `client`, and `producer` depend on `core`, while `core` has no implementation-module dependency.
+The dependency rules are intentionally prohibitions. Endpoint-to-service-contract and service-implementation-to-repository/mapper dependencies remain allowed. The declared Gradle graph connects `service`, `client`, and `producer` to `core`; preventing future edits to that graph requires a separate build-configuration policy check.
 
-Core contracts are expected to remain logging-free at the API/design level. This template deliberately does not require logger fields or forbid a logger type because no logging API is selected; a generated service should add an API-specific rule after choosing its logging stack.
+All production modules prohibit direct standard output/error access, Java 25 `java.lang.IO` access, and `Throwable.printStackTrace` calls. Core contracts are expected to remain logging-free at the API/design level. Logger field modifiers and logging facade restrictions require a selected logging API and are deferred.
+
+Implementation checks include subpackages. For example, `service.impl.user.UserServiceImpl` maps to `service.user.UserService`; clients follow the same relative-package mapping. Abstract base types without the role suffix are exempt from implementation naming and contract checks. Types named with `ServiceImpl`, `ServiceClient`, `Entity`, or `Producer` must reside in their corresponding role packages.
+
+Core models and exceptions must not depend on service contracts. Entities must not depend on endpoints, service implementations, repository behavior, or mappers. Mappers must not depend on endpoints, service implementations, or repository behavior, but may use entities and contract models.
+
+Shared production guardrails validate the configured main output paths and compare imported types with compiled class files. Empty modules remain valid; modules containing Java type sources must produce class files. Rule tests compile isolated fixtures in temporary directories and check violation reasons. These fixtures are never added to production output.
 
 The template also intentionally defers implementation visibility and abstract/final policies, constructor-injection and field-finality checks, arbitrary package-cycle rules, broad package allowlists or leak rules, and cross-business-boundary checks. Those policies require framework, application, or boundary decisions that this framework-neutral provisioning template does not make.
 

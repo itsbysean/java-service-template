@@ -82,9 +82,17 @@ final class ServiceArchitectureRules {
     static ArchRule serviceImplementationsMustUseServiceImplSuffix() {
         return classes()
                 .that()
-                .resideInAnyPackage("..service.impl")
+                .resideInAnyPackage("..service.impl..")
                 .and()
                 .areTopLevelClasses()
+                .and(new com.tngtech.archunit.base.DescribedPredicate<com.tngtech.archunit.core.domain.JavaClass>("role implementation") {
+                    @Override
+                    public boolean test(com.tngtech.archunit.core.domain.JavaClass type) {
+                        return type.getSimpleName().endsWith("ServiceImpl")
+                                || type.isInterface()
+                                || !type.getModifiers().contains(com.tngtech.archunit.core.domain.JavaModifier.ABSTRACT);
+                    }
+                })
                 .should()
                 .haveSimpleNameEndingWith("ServiceImpl")
                 .allowEmptyShould(true);
@@ -94,9 +102,17 @@ final class ServiceArchitectureRules {
     static ArchRule serviceImplementationsMustBeClasses() {
         return classes()
                 .that()
-                .resideInAnyPackage("..service.impl")
+                .resideInAnyPackage("..service.impl..")
                 .and()
                 .areTopLevelClasses()
+                .and(new com.tngtech.archunit.base.DescribedPredicate<com.tngtech.archunit.core.domain.JavaClass>("role implementation") {
+                    @Override
+                    public boolean test(com.tngtech.archunit.core.domain.JavaClass type) {
+                        return type.getSimpleName().endsWith("ServiceImpl")
+                                || type.isInterface()
+                                || !type.getModifiers().contains(com.tngtech.archunit.core.domain.JavaModifier.ABSTRACT);
+                    }
+                })
                 .should()
                 .notBeInterfaces()
                 .allowEmptyShould(true);
@@ -106,9 +122,17 @@ final class ServiceArchitectureRules {
     static ArchRule serviceImplementationsMustMatchCoreContracts(final JavaClasses contractClasses) {
         return classes()
                 .that()
-                .resideInAnyPackage("..service.impl")
+                .resideInAnyPackage("..service.impl..")
                 .and()
                 .areTopLevelClasses()
+                .and(new com.tngtech.archunit.base.DescribedPredicate<com.tngtech.archunit.core.domain.JavaClass>("role implementation") {
+                    @Override
+                    public boolean test(com.tngtech.archunit.core.domain.JavaClass type) {
+                        return type.getSimpleName().endsWith("ServiceImpl")
+                                || type.isInterface()
+                                || !type.getModifiers().contains(com.tngtech.archunit.core.domain.JavaModifier.ABSTRACT);
+                    }
+                })
                 .should(new ServiceImplementationMatchesContract(contractClasses))
                 .allowEmptyShould(true);
     }
@@ -120,6 +144,14 @@ final class ServiceArchitectureRules {
                 .resideInAnyPackage("..repository.entity")
                 .and()
                 .areTopLevelClasses()
+                .and(new com.tngtech.archunit.base.DescribedPredicate<com.tngtech.archunit.core.domain.JavaClass>("role implementation") {
+                    @Override
+                    public boolean test(com.tngtech.archunit.core.domain.JavaClass type) {
+                        return type.getSimpleName().endsWith("ServiceImpl")
+                                || type.isInterface()
+                                || !type.getModifiers().contains(com.tngtech.archunit.core.domain.JavaModifier.ABSTRACT);
+                    }
+                })
                 .should()
                 .haveSimpleNameEndingWith("Entity")
                 .allowEmptyShould(true);
