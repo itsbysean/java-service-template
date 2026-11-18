@@ -15,9 +15,17 @@ final class ClientArchitectureRules {
     static ArchRule serviceClientsMustUseServiceClientSuffix() {
         return classes()
                 .that()
-                .resideInAnyPackage("..service.client")
+                .resideInAnyPackage("..service.client..")
                 .and()
                 .areTopLevelClasses()
+                .and(new com.tngtech.archunit.base.DescribedPredicate<com.tngtech.archunit.core.domain.JavaClass>("role implementation") {
+                    @Override
+                    public boolean test(com.tngtech.archunit.core.domain.JavaClass type) {
+                        return type.getSimpleName().endsWith("ServiceClient")
+                                || type.isInterface()
+                                || !type.getModifiers().contains(com.tngtech.archunit.core.domain.JavaModifier.ABSTRACT);
+                    }
+                })
                 .should()
                 .haveSimpleNameEndingWith("ServiceClient")
                 .allowEmptyShould(true);
@@ -27,9 +35,17 @@ final class ClientArchitectureRules {
     static ArchRule serviceClientsMustBeClasses() {
         return classes()
                 .that()
-                .resideInAnyPackage("..service.client")
+                .resideInAnyPackage("..service.client..")
                 .and()
                 .areTopLevelClasses()
+                .and(new com.tngtech.archunit.base.DescribedPredicate<com.tngtech.archunit.core.domain.JavaClass>("role implementation") {
+                    @Override
+                    public boolean test(com.tngtech.archunit.core.domain.JavaClass type) {
+                        return type.getSimpleName().endsWith("ServiceClient")
+                                || type.isInterface()
+                                || !type.getModifiers().contains(com.tngtech.archunit.core.domain.JavaModifier.ABSTRACT);
+                    }
+                })
                 .should()
                 .notBeInterfaces()
                 .allowEmptyShould(true);
@@ -39,9 +55,17 @@ final class ClientArchitectureRules {
     static ArchRule serviceClientsMustMatchCoreContracts(final JavaClasses contractClasses) {
         return classes()
                 .that()
-                .resideInAnyPackage("..service.client")
+                .resideInAnyPackage("..service.client..")
                 .and()
                 .areTopLevelClasses()
+                .and(new com.tngtech.archunit.base.DescribedPredicate<com.tngtech.archunit.core.domain.JavaClass>("role implementation") {
+                    @Override
+                    public boolean test(com.tngtech.archunit.core.domain.JavaClass type) {
+                        return type.getSimpleName().endsWith("ServiceClient")
+                                || type.isInterface()
+                                || !type.getModifiers().contains(com.tngtech.archunit.core.domain.JavaModifier.ABSTRACT);
+                    }
+                })
                 .should(new ClientImplementationMatchesContract(contractClasses))
                 .allowEmptyShould(true);
     }

@@ -14,7 +14,7 @@ final class CoreArchitectureRules {
     static ArchRule serviceContractsMustBePublicInterfacesNamedService() {
         return classes()
                 .that()
-                .resideInAnyPackage("..service")
+                .resideInAnyPackage("..service..")
                 .and()
                 .areTopLevelClasses()
                 .should()

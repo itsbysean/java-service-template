@@ -14,7 +14,7 @@ final class ProducerArchitectureRules {
     static ArchRule producersMustUseProducerSuffix() {
         return classes()
                 .that()
-                .resideInAnyPackage("..producer")
+                .resideInAnyPackage("..producer..")
                 .and()
                 .areTopLevelClasses()
                 .should()

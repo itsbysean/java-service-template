@@ -32,16 +32,17 @@ final class ServiceImplementationMatchesContract extends ArchCondition<JavaClass
         }
 
         final String packageName = implementation.getPackageName();
-        if (!packageName.endsWith(IMPLEMENTATION_PACKAGE_SUFFIX)) {
+        final String marker = ".service" + IMPLEMENTATION_PACKAGE_SUFFIX;
+        final int markerIndex = packageName.lastIndexOf(marker);
+        if (markerIndex < 0 || !(packageName.endsWith(marker) || packageName.startsWith(marker + ".", markerIndex))) {
             events.add(SimpleConditionEvent.violated(
                     implementation,
                     implementationName + " is not in a direct service.impl package, so its core contract cannot be derived"));
             return;
         }
 
-        final String contractPackage = packageName.substring(
-                0,
-                packageName.length() - IMPLEMENTATION_PACKAGE_SUFFIX.length());
+        final String contractPackage = packageName.substring(0, markerIndex) + ".service"
+                + packageName.substring(markerIndex + marker.length());
         final String contractSimpleName = simpleName.substring(
                 0,
                 simpleName.length() - IMPLEMENTATION_NAME_SUFFIX.length());
